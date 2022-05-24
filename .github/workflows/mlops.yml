@@ -21,7 +21,7 @@ jobs:
         run: |
           make test
       - name: Set up gcloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
+        uses: google-github-actions/deploy-cloudrun@main
         with:
           project_id: ${{ secrets.PROJECT_ID }}
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
@@ -33,7 +33,7 @@ jobs:
         run: |-
           gcloud run deploy "$SERVICE_NAME" \
             --quiet \
-            --image "eu.gcr.io/my-container-project/$SERVICE_NAME:$GITHUB_SHA" \
+            --image "gcr.io/mlops_test/$SERVICE_NAME:$GITHUB_SHA" \
             --region "$RUN_REGION" \
             --platform "managed" \
             --allow-unauthenticated \
