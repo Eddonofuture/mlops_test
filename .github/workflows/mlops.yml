@@ -20,6 +20,4 @@ jobs:
       - name: test
         run: |
           make test
-      - name: start
-        run: |
-          make start
+
