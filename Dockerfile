@@ -1,6 +1,5 @@
-# Dockerfile
-FROM python:alpine3.7
-COPY requirements.txt /
-RUN pip3 install -r /requirements.txt
-COPY app.py .
-CMD ["gunicorn"  , "-b", "0.0.0.0:5000", "app:app"]
+FROM python:3.6-slim-buster
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
