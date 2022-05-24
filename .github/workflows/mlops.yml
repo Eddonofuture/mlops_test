@@ -20,20 +20,22 @@ jobs:
       - name: test
         run: |
           make test
-      - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@main
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
         with:
-          project_id: ${{ secrets.PROJECT_ID }}
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          export_default_credentials: true
-          
-      # Deploy to CloudRun
+          credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'      
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+        # Deploy to CloudRun
       - name: Deploy to CloudRun
         run: |-
-          gcloud run deploy "$SERVICE_NAME" \
+          gcloud run deploy flask_ml \
             --quiet \
-            --image "gcr.io/mlops_test/$SERVICE_NAME:$GITHUB_SHA" \
-            --region "$RUN_REGION" \
+            --image "gcr.io/mlops_test/flask_ml:$GITHUB_SHA" \
+            --region us-central1 \
             --platform "managed" \
             --allow-unauthenticated \
             --memory=512Mi
