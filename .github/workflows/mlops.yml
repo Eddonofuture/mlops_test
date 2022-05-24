@@ -34,7 +34,7 @@ jobs:
         run: |-
           gcloud run deploy flask-ml \
             --quiet \
-            --image "gcr.io/mlops_test/flask-ml:$GITHUB_SHA" \
+            --image "gcr.io/${{ secrets.PROJECT_ID }}/mlops_test:$GITHUB_SHA" \
             --region us-central1 \
             --platform "managed" \
             --allow-unauthenticated \
