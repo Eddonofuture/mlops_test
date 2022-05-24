@@ -20,11 +20,20 @@ jobs:
       - name: test
         run: |
           make test
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
+      - name: Set up gcloud
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
         with:
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           project_id: ${{ secrets.PROJECT_ID }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           export_default_credentials: true
-      - name: Image
+
+      # Deploy to CloudRun
+      - name: Deploy to CloudRun
         run: |-
-          docker build --build-arg NPM_TOKEN=${{ secrets.NPM_TOKEN }} -t eu.gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --image "eu.gcr.io/my-container-project/$SERVICE_NAME:$GITHUB_SHA" \
+            --region "$RUN_REGION" \
+            --platform "managed" \
+            --allow-unauthenticated \
+            --memory=512Mi
