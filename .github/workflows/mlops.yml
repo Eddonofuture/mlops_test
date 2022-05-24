@@ -26,7 +26,8 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           export_default_credentials: true
-
+          actions/checkout Default: ${{ github.repository }}
+          
       # Deploy to CloudRun
       - name: Deploy to CloudRun
         run: |-
