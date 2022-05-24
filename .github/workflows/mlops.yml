@@ -32,9 +32,9 @@ jobs:
         # Deploy to CloudRun
       - name: Deploy to CloudRun
         run: |-
-          gcloud run deploy flask_ml \
+          gcloud run deploy flask-ml \
             --quiet \
-            --image "gcr.io/mlops_test/flask_ml:$GITHUB_SHA" \
+            --image "gcr.io/mlops_test/flask-ml:$GITHUB_SHA" \
             --region us-central1 \
             --platform "managed" \
             --allow-unauthenticated \
